@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<<style>
+/* === BODY === */
+body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#F8F6FB;
+    color:#333333;
+}
+
+/* === HEADER === */
+header {
+    background: linear-gradient(45deg,#1E3A8A,#2C3E50); /* أزرق داكن احترافي */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.menu-btn {
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search {
+    position: relative;
+}
+
+.search input {
+    padding: 5px 25px 5px 8px;
+    border-radius: 20px;
+    border: none;
+}
+
+.search-icon {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.account-icon {
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    width: 260px;
+    height: 100%;
+    background: #1f2937;
+    color: white;
+    transition: 0.3s;
+    padding-top: 20px;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.sidebar a:hover {
+    background: #374151;
+}
+
+/* === MAIN CONTENT === */
+.main {
+    padding: 20px;
+}
+
+/* === CARD === */
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.info {
+    display: flex;
+    gap: 20px;
+}
+
+/* === TABLE === */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #2C3E50; /* أزرق داكن */
+    color: white;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+tr:nth-child(even) {
+    background: #F0F0F0; /* رمادي فاتح */
+}
+
+/* === BUTTONS === */
+.btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.green {
+    background: #22c55e; /* أخضر */
+}
+
+.orange {
+    background: #4CAF50; /* أخضر احترافي */
+    color: white;
+}
+
+.blue {
+    background: #2C3E50; /* أزرق داكن */
+}
+
+.red {
+    background: #1E3A8A; /* أزرق أغمق */
+}
+
+/* === TOAST === */
+.toast {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    color: white;
+    display: none;
+    border-radius: 5px;
+}
+
+/* === FORM INSIDE TABLE === */
+.form-inline {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;g
+}
+
+/* === RESPONSIVE === */
+@media(max-width:768px){
+    .main {
+        padding: 10px;
+    }
+    table {
+        font-size: 14px;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <span class="menu-btn" onclick="toggleMenu()">☰</span>
+    <h3>Bienvenue</h3>
+  </div>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <div class="search">
+      <input type="text" placeholder="Recherche...">
+      <span class="search-icon">🔍</span>
+    </div>
+    <span class="account-icon">👤</span>
+  </div>
+</header>
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+  <div class="sidebar-header">
+    <span>Menu</span>
+    <span onclick="toggleMenu()">❌</span>
+  </div>
+  <a>🏠 Accueil</a>
+  <a>📁 Livrables</a>
+  <a>⭐ Notes & Remarque</a>
+  <a>👥Groupe</a>
+  <a>🚪 Déconnexion</a>
+</div>
+<div class="main">
+<!-- INFORMATION ETUDIANT -->
+<div class="card info">
+  <div>
+    <p><b>Nom:</b></p>
+    <p><b>Groupe:</b></p>
+    <p><b>Projet:</b></p>
+  </div>
+</div>
+  <!-- Progression -->
+<div class="card">
+  <h4>Progression</h4>
+  <div style="background:#ddd; border-radius:10px; height:15px; width:20%;">
+    <div id="progress-bar" style="width:0%; background:#22c55e; height:100%; border-radius:10px;"></div>
+  </div>
+</div>
+</div>
+
+<!-- TABLE DES ETAPES -->
+<div class="card">
+<h3>Suivi des Étapes</h3>
+<table>
+<tr>
+<th>Étape</th>
+<th>Fichier</th>
+<th>Action</th>
+</tr>
+
+{% for i in range(3) %}
+<tr>
+<td></td>
+<td></td>
+<td>
+  <form class="form-inline" action="/upload/{{i+1}}" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+<button class="btn blue" type="submit" onclick="return checkFile(this, 'Envoyé')">Envoyer</button>
+<button class="btn orange" type="button" onclick="checkFile(this, 'Modifié')">Modifier</button>
+<button class="btn red" type="button" onclick="checkFile(this, 'Supprimé')">Supprimer</button>
+  </form>
+</td>
+</tr>
+{% endfor %}
+
+</table>
+<br>
+<div id="toast" class="toast"></div>
+<script>
+function toggleMenu(){
+  let s = document.getElementById("sidebar");
+
+  if(s.style.left === "" || s.style.left === "-260px"){
+    s.style.left = "0px";
+  } else {
+    s.style.left = "-260px";
+  }
+}
+// Toast
+function showToast(message){
+  let t = document.getElementById("toast");
+  t.innerText = message;
+
+  if(message.includes('Supprimé')) t.style.background='#ef4444';
+  else if(message.includes('Modifié')) t.style.background='#f59e0b';
+  else t.style.background='#22c55e';
+
+  t.style.display="block";
+  setTimeout(()=>t.style.display="none",1000);
+}
+
+// التحقق من وجود ملف
+function checkFile(btn, action){
+  let fileInput = btn.parentElement.querySelector("input[type='file']");
+
+  if(!fileInput.files.length){
+    showToast("aucun fichier");
+    return false;
+  }
+
+  showToast(action);
+  return true;
+}
+</script>
+
+</body>
+</html>
