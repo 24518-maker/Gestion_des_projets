@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Étapes{% endblock %}
+
+{% block content %}
+<h2>📝 Étapes</h2>
+
+<a href="{{ url_for('add_etape_page') }}" style="padding:8px 12px;background:#4CAF50;color:white;border-radius:6px;text-decoration:none;">➕ Ajouter Étape</a>
+
+<table style="width:100%;border-collapse:collapse;margin-top:15px;">
+  <thead>
+    <tr style="background:#e9eef6;">
+      <th>Nom Étape</th>
+      <th>Date Début</th>
+      <th>Date Fin</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for etape in etapes %}
+    <tr style="border-bottom:1px solid #ddd;">
+      <td>{{ etape.nom_etape }}</td>
+      <td>{{ etape.date_debut }}</td>
+      <td>{{ etape.date_fin }}</td>
+      <td>
+        <a href="{{ url_for('update_etape_page', Id_etape=etape.Id_etape) }}">✏️ Edit</a> |
+        <a href="{{ url_for('delete_etape_page', Id_etape=etape.Id_etape) }}">🗑️ Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

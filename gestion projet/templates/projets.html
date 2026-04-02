@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Projets{% endblock %}
+
+{% block content %}
+<h2>📁 Projets</h2>
+
+<a href="{{ url_for('add_projet_page') }}" style="padding:8px 12px;background:#4CAF50;color:white;border-radius:6px;text-decoration:none;">➕ Ajouter Projet</a>
+
+<table style="width:100%;border-collapse:collapse;margin-top:15px;">
+  <thead>
+    <tr style="background:#e9eef6;">
+      <th>Nom</th>
+      <th>Date Début</th>
+      <th>Date Fin</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for projet in projets %}
+    <tr style="border-bottom:1px solid #ddd;">
+      <td>{{ projet.nom_projet }}</td>
+      <td>{{ projet.date_debut }}</td>
+      <td>{{ projet.date_fin }}</td>
+      <td>
+        <a href="{{ url_for('update_projet_page', Id_projet=projet.Id_projet) }}">✏️ Edit</a> |
+        <a href="{{ url_for('delete_projet_page', Id_projet=projet.Id_projet) }}">🗑️ Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,79 @@
+‫ {% extends "base.html" %}
+{% block title %}Évaluations{% endblock %}
+
+{% block content %}
+
+<style>
+/* زر الأخضر مثل Dashboard */
+.btn-main {
+    display:inline-block;
+    background:#4CAF50;
+    color:white;
+    padding:8px 15px;
+    border-radius:8px;
+    text-decoration:none;
+    margin-bottom:15px;
+}
+
+/* الجدول داخل صندوق أبيض */
+.table-box {
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+th {
+    background:#e9eef6;
+    padding:12px;
+    text-align:left;
+}
+
+td {
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+tr:hover {
+    background:#f5f5f5;
+    cursor:pointer;
+}
+</style>
+
+<h2 style="color:BLACK; margin-bottom:10px;">📋 Évaluations</h2>
+<a href="{{ url_for('add_evaluation_page') }}" class="btn-main">➕ Ajouter Évaluation</a>
+
+<div class="table-box">
+<table>
+    <thead>
+        <tr>
+            <th>Étape</th>
+            <th>Groupe</th>
+            <th>Note</th>
+            <th>Remarque</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for eval in evaluations %}
+        <tr>
+            <td>{{ eval.Nom_etape }}</td>
+            <td>{{ eval.nom_group }}</td>
+            <td>{{ eval.Note }}</td>
+            <td>{{ eval.Remarque }}</td>
+            <td>
+                <a href="{{ url_for('update_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">✏️</a>
+                <a href="{{ url_for('delete_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">🗑️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.6s ease;
+
+  background:
+    radial-gradient(circle at top, rgba(15,23,42,0.5), rgba(2,6,23,0.4)),
+    url('/static/images/IMG_1423.PNG');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.hero {
+  text-align: center;
+}
+
+/* Title */
+.hero h1 {
+  font-size: 50px;
+  background: linear-gradient(90deg, #38bdf8, #84cc16);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Text */
+.hero p {
+  margin-top: 15px;
+  color: #f1f5f9;
+  font-size: 18px;
+}
+
+.btn-main {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 18px 50px;
+  font-size: 20px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: white;
+  background: linear-gradient(135deg, #38bdf8, #84cc16);
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(56,189,248,0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(56,189,248,0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(56,189,248,0);
+  }
+}
+
+/* glow effect */
+.btn-main::before {
+  content: "";
+  position: absolute;
+  width: 300%;
+  height: 300%;
+  top: -100%;
+  left: -100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
+  transition: 0.5s;
+}
+
+.btn-main:hover::before {
+  top: 0;
+  left: 0;
+}
+
+.btn-main:hover {
+  transform: scale(1.1);
+}

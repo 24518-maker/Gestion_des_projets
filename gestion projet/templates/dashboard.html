@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg,#A8E6CF,#56CFE1);
+  color: #fff;
+  padding: 20px 40px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.topbar-left h2 {
+  margin: 0;
+}
+.topbar-left p {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.topbar .user {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.stats {
+  display:flex;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.card {
+  flex:1;
+  background:#F0F8FF;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  text-align:center;
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:translateY(-5px);
+}
+
+.card h3 {
+  margin:0;
+  color:#333;
+}
+
+.card p {
+  font-size:26px;
+  font-weight:bold;
+  margin-top:10px;
+  color:#2a5298;
+}
+
+.grid {
+  display:flex;
+  gap:20px;
+  margin-bottom:20px;
+}
+
+.box {
+  flex:1;
+  background:#F9FFF9;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+/* ===== TABLE ===== */
+table {
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+}
+.circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(#4CAF50 0%, #e0e0e0 0%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin: auto;
+  transition: background 1s linear;
+}
+
+th {
+  background:#e9eef6;
+  padding:12px;
+  text-align:left;
+}
+
+td {
+  padding:12px;
+  border-bottom:1px solid #ddd;
+}
+
+tr:hover {
+  background:#DFF6F0;
+  cursor:pointer;
+}
+
+.en-cours {
+  background:#56CFE1;
+  padding:5px 10px;
+  border-radius:20px;
+  color:white;
+}
+
+.termine {
+  background:#4CAF50;
+  padding:5px 10px;
+  border-radius:20px;
+  color:white;
+}
+
+</style>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <h2>📊 Tableau de Bord Encadrant</h2>
+    <p style="margin:0;font-size:13px;opacity:0.8;">
+      Bienvenue dans votre espace de gestion
+    </p>
+  </div>
+
+<div class="topbar-right"style="display:flex; align-items:center; gap:15px;">
+
+  <div style="display:flex; align-items:center; gap:10px;">
+    <img src="{{ url_for('static', filename='images/' + photo_encadrant) }}"
+         alt="Photo Enseignant"
+         style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+    <span style="color:#fff;"> {{ nom_encadrant }}</span>
+    </div>
+    <a href="{{ url_for('logout') }}" style="color:white;">Déconnexion</a>
+
+  </div>
+
+</div>
+
+<div class="stats">
+
+  <div class="card">
+    <h3>📁 Total Projets</h3>
+    <p>{{ total_projets }}</p>
+  </div>
+
+  <div class="card">
+    <h3>⏳ Projets En Cours</h3>
+    <p>{{ projets_en_cours }}</p>
+  </div>
+
+  <div class="card">
+    <h3>✅ Projets Terminés</h3>
+    <p>{{ projets_termines }}</p>
+  </div>
+
+  <div class="card">
+    <h3>🎓 Étudiants</h3>
+    <p>{{ total_etudiants }}</p>
+  </div>
+
+</div>
+
+<div class="grid">
+
+  <div class="box">
+    <h3>Progression des Projets</h3>
+    <div class="circle" data-progress="{{ progress }}">0%</div>
+    <p style="text-align:center;margin-top:10px;">Complété</p>
+  </div>
+
+  <div class="box">
+    <h3>Statistiques</h3>
+    <p>📈 En cours : {{ projets_en_cours }}</p>
+    <p>✅ Terminés : {{ projets_termines }}</p>
+  </div>
+
+</div>
+
+<div class="box">
+  <h3>Liste des Projets</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>État</th>
+        <th>Groupes</th>
+        <th>Date Fin</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for projet in projets %}
+      <tr onclick="window.location='/etapes/{{ projet.Id_projet }}'">
+        <td>{{ projet.Nom_projet }}</td>
+
+        <td>
+          {% if projet.date_fin <= now().date() %}
+            <span class="termine">Terminé</span>
+          {% else %}
+            <span class="en-cours">En cours</span>
+          {% endif %}
+        </td>
+
+        <td>{{ projet.groupes|length }}</td>
+        <td>{{ projet.date_fin }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+<script>
+const circle = document.querySelector('.circle');
+const target = parseInt(circle.dataset.progress);
+let current = 0;
+
+const interval = setInterval(() => {
+  if (current <= target) {
+    circle.style.background = `conic-gradient(#4CAF50 0% ${current}%, #e0e0e0 ${current}% 100%)`;
+    circle.textContent = current + '%';
+    current++;
+  } else {
+    clearInterval(interval);
+  }
+}, 20);
+</script>
+
+{% endblock %}
