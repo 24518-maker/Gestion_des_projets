@@ -10,7 +10,7 @@
   align-items: center;
   background: linear-gradient(90deg,#A8E6CF,#56CFE1);
   color: #fff;
-  padding: 20px 40px;
+  padding: 40px 70px;
   border-radius: 12px;
   margin-bottom: 20px;
 }
@@ -148,7 +148,7 @@ tr:hover {
   <div style="display:flex; align-items:center; gap:10px;">
     <img src="{{ url_for('static', filename='images/' + photo_encadrant) }}"
          alt="Photo Enseignant"
-         style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+         style="width:50px; height:40px; border-radius:50%; object-fit:cover;">
     <span style="color:#fff;"> {{ nom_encadrant }}</span>
     </div>
     <a href="{{ url_for('logout') }}" style="color:white;">Déconnexion</a>
@@ -223,7 +223,7 @@ tr:hover {
           {% endif %}
         </td>
 
-        <td>{{ projet.groupes|length }}</td>
+        <td>{{ projet.nom_group}}</td>
         <td>{{ projet.date_fin }}</td>
       </tr>
       {% endfor %}

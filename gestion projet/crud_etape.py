@@ -1,35 +1,68 @@
 from db import get_connection
+
 def get_etapes():
     db = get_connection()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM etape")
+
+    cursor.execute("""
+        SELECT e.*, p.Nom_projet
+        FROM etape e
+        JOIN projet p ON e.Id_projet = p.Id_projet
+    """)
+
     etapes = cursor.fetchall()
     db.close()
     return etapes
 
-def add_etape(Nom_etape):
+def get_etapes_by_projet(Id_projet):
     db = get_connection()
     cursor = db.cursor()
-    cursor.execute(
-        "INSERT INTO etape (Nom_etape) VALUES (%s)",
-        (Nom_etape,)
-    )
+
+    cursor.execute("""
+        SELECT * FROM etape
+        WHERE Id_projet = %s
+    """, (Id_projet,))
+
+    etapes = cursor.fetchall()
+    db.close()
+    return etapes
+
+
+# ADD ETAPE
+def add_etape(Nom_etape, Id_projet):
+    db = get_connection()
+    cursor = db.cursor()
+
+    cursor.execute("""
+        INSERT INTO etape (Nom_etape, Id_projet)
+        VALUES (%s, %s)
+    """, (Nom_etape, Id_projet))
+
     db.commit()
     db.close()
 
+
+# UPDATE ETAPE
 def update_etape(Id_etape, Nom_etape):
     db = get_connection()
     cursor = db.cursor()
-    cursor.execute(
-        "UPDATE etape SET Nom_etape=%s WHERE Id_etape=%s",
-        (Nom_etape, Id_etape)
-    )
+
+    cursor.execute("""
+        UPDATE etape
+        SET Nom_etape=%s
+        WHERE Id_etape=%s
+    """, (Nom_etape ,Id_etape))
+
     db.commit()
     db.close()
 
+
+# DELETE ETAPE
 def delete_etape(Id_etape):
     db = get_connection()
     cursor = db.cursor()
+
     cursor.execute("DELETE FROM etape WHERE Id_etape=%s", (Id_etape,))
+
     db.commit()
     db.close()

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>➕ Ajouter Étape</h2>
+
+<form method="POST">
+
+  <label>Nom Étape</label><br>
+  <input type="text" name="Nom_etape" required><br><br>
+
+  <label>Choisir Projet</label><br>
+  <select name="Id_projet" required>
+    {% for p in projets %}
+      <option value="{{ p.Id_projet }}">{{ p.Nom_projet }}</option>
+    {% endfor %}
+  </select><br><br>
+
+  <button type="submit">Créer</button>
+
+</form>
+
+{% endblock %}

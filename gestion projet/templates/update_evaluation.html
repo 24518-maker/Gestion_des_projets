@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Modifier Évaluation{% endblock %}
+
+{% block content %}
+
+<h2>✏️ Modifier Évaluation</h2>
+
+<form method="POST">
+
+    <label>Note:</label><br>
+    <input type="number" name="Note" value="{{ evaluation.Note }}" required>
+    <br><br>
+
+    <label>Remarque:</label><br>
+    <textarea name="Remarque">{{ evaluation.Remarque }}</textarea>
+    <br><br>
+
+    <button type="submit">💾 Sauvegarder</button>
+
+</form>
+
+{% endblock %}

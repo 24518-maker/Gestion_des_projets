@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Ajouter Évaluation{% endblock %}
+
+{% block content %}
+
+<h2>➕ Ajouter Évaluation</h2>
+
+<form method="POST">
+
+    <label>Groupe:</label>
+    <select name="Id_group" required>
+        {% for g in groupes %}
+        <option value="{{ g.Id_group }}">{{ g.nom_group }}</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <label>Étape:</label>
+    <select name="Id_etape" required>
+        {% for e in etapes %}
+        <option value="{{ e.Id_etape }}">{{ e.Nom_etape }}</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <label>Note:</label>
+    <input type="number" name="Note" required>
+
+    <br><br>
+
+    <label>Remarque:</label>
+    <textarea name="Remarque"></textarea>
+
+    <br><br>
+
+    <button type="submit">💾 Enregistrer</button>
+
+</form>
+
+{% endblock %}

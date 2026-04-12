@@ -1,6 +1,5 @@
 from db import get_connection
 
-# LOGIN
 def get_encadrant_by_email_password(email, password):
     db = get_connection()
     cursor = db.cursor()

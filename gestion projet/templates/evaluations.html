@@ -1,10 +1,9 @@
-‫ {% extends "base.html" %}
+ {% extends "base.html" %}
 {% block title %}Évaluations{% endblock %}
 
 {% block content %}
 
 <style>
-/* زر الأخضر مثل Dashboard */
 .btn-main {
     display:inline-block;
     background:#4CAF50;
@@ -15,7 +14,6 @@
     margin-bottom:15px;
 }
 
-/* الجدول داخل صندوق أبيض */
 .table-box {
     background:white;
     padding:20px;
@@ -57,6 +55,7 @@ tr:hover {
             <th>Note</th>
             <th>Remarque</th>
             <th>Actions</th>
+            <th>Date</th>
         </tr>
     </thead>
     <tbody>
@@ -66,10 +65,16 @@ tr:hover {
             <td>{{ eval.nom_group }}</td>
             <td>{{ eval.Note }}</td>
             <td>{{ eval.Remarque }}</td>
+            <td>{{eval.date_evaluation}}</td>
             <td>
-                <a href="{{ url_for('update_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">✏️</a>
-                <a href="{{ url_for('delete_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">🗑️</a>
-            </td>
+    <a href="{{ url_for('update_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">✏️</a>
+
+    <form method="POST"
+          action="{{ url_for('delete_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}"
+          style="display:inline;">
+        <button type="submit">🗑️</button>
+    </form>
+</td>
         </tr>
         {% endfor %}
     </tbody>

@@ -10,17 +10,15 @@
   <thead>
     <tr style="background:#e9eef6;">
       <th>Nom Étape</th>
-      <th>Date Début</th>
-      <th>Date Fin</th>
+      <th>Projet</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     {% for etape in etapes %}
     <tr style="border-bottom:1px solid #ddd;">
-      <td>{{ etape.nom_etape }}</td>
-      <td>{{ etape.date_debut }}</td>
-      <td>{{ etape.date_fin }}</td>
+      <td>{{ etape.Nom_etape }}</td>
+      <td>{{ etape.Nom_projet }}</td>
       <td>
         <a href="{{ url_for('update_etape_page', Id_etape=etape.Id_etape) }}">✏️ Edit</a> |
         <a href="{{ url_for('delete_etape_page', Id_etape=etape.Id_etape) }}">🗑️ Delete</a>

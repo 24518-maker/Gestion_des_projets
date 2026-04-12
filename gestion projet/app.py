@@ -1,11 +1,12 @@
 from flask import Flask, request, redirect, render_template, session, url_for
 from datetime import date, datetime
 from crud_projet import get_projets, add_projet, update_projet, delete_projet
-from crud_groupe import get_groupes, add_groupe, update_groupe, delete_groupe
+from crud_groupes import get_groupes
 from crud_etape import get_etapes, add_etape, update_etape, delete_etape
-from crud_evaluation import get_evaluations, add_evaluation, update_evaluation, delete_evaluation
+from crud_evaluation import get_evaluations, add_evaluation, update_evaluation, delete_evaluation,get_evaluation_by_id
 from crud_livrable import get_livrables
 from crud_encadrant import get_encadrant_by_email_password, get_encadrant_by_email, update_password
+from db import get_connection
 
 app = Flask(__name__)
 app.secret_key = "secret123"
@@ -14,7 +15,7 @@ app.secret_key = "secret123"
 def inject_now():
     return {'now': datetime.now}
 
-# ===== ACCUEIL =====
+
 @app.route("/")
 @app.route("/accueil")
 def accueil():
@@ -93,15 +94,24 @@ def dashboard():
     total_projets = len(projets)
     projets_termines = 0
     projets_en_cours = 0
-    total_etudiants = 0
+
+    db = get_connection()
+    cursor = db.cursor()
+
+    # ✅ FIX FINAL: عدد التلاميذ الصحيح لهذا الأستاذ فقط
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM etudiant e
+        JOIN groupe g ON e.Id_group = g.Id_group
+        WHERE g.Id_Encadrant = %s
+    """, (encadrant_id,))
+
+    total_etudiants = cursor.fetchone()["COUNT(*)"]
 
     for projet in projets:
         groupes = get_groupes(projet['Id_projet'])
         projet['groupes'] = groupes
-
-        # Exemple simple d'avancement
         projet['avancement'] = 0
-
 
         date_fin = projet['date_fin']
         if isinstance(date_fin, str):
@@ -119,13 +129,11 @@ def dashboard():
         else:
             projets_en_cours += 1
 
-        total_etudiants += sum(len(groupe.get('etudiants', [])) for groupe in groupes)
-
     return render_template(
         "dashboard.html",
-        nom_enseignant=nom_encadrant,
+        nom_encadrant=nom_encadrant,
         total_projets=total_projets,
-        photo_encadrant=session['photo_encadrant'],
+        photo_encadrant=session.get('photo_encadrant'),
         projets_en_cours=projets_en_cours,
         projets_termines=projets_termines,
         total_etudiants=total_etudiants,
@@ -135,25 +143,36 @@ def dashboard():
 def projets_page():
     if "encadrant_id" not in session:
         return redirect(url_for("login"))
+
     projets = get_projets(session["encadrant_id"])
     return render_template('projets.html', projets=projets)
 
+
+# ADD PROJET
 @app.route('/projets/add', methods=['GET', 'POST'])
 def add_projet_page():
     if "encadrant_id" not in session:
         return redirect(url_for("login"))
 
+    db = get_connection()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM groupe WHERE Id_encadrant=%s", (session["encadrant_id"],))
+    groupes = cursor.fetchall()
+
     if request.method == 'POST':
         add_projet(
-            request.form['nom_projet'],
+            request.form['Nom_projet'],
             request.form['date_debut'],
             request.form['date_fin'],
-            request.form['id_groupe']
+            request.form['id_group']
         )
         return redirect(url_for('projets_page'))
 
-    return render_template('add_projet.html')
+    return render_template('add_projet.html', groupes=groupes)
 
+
+# UPDATE PROJET
 @app.route('/projets/update/<int:Id_projet>', methods=['GET', 'POST'])
 def update_projet_page(Id_projet):
     if "encadrant_id" not in session:
@@ -165,7 +184,7 @@ def update_projet_page(Id_projet):
     if request.method == 'POST':
         update_projet(
             Id_projet,
-            request.form['nom_projet'],
+            request.form['Nom_projet'],
             request.form['date_debut'],
             request.form['date_fin']
         )
@@ -173,6 +192,8 @@ def update_projet_page(Id_projet):
 
     return render_template('update_projet.html', projet=projet)
 
+
+# DELETE PROJET
 @app.route('/projets/delete/<int:Id_projet>')
 def delete_projet_page(Id_projet):
     if "encadrant_id" not in session:
@@ -180,58 +201,14 @@ def delete_projet_page(Id_projet):
 
     delete_projet(Id_projet)
     return redirect(url_for('projets_page'))
-
 @app.route('/groupes')
 def groupes_page():
     if "encadrant_id" not in session:
         return redirect(url_for("login"))
 
-    groupes = []
-    projets = get_projets(session["encadrant_id"])
-    for projet in projets:
-        groupes += get_groupes(projet['Id_projet'])
+    groupes = get_groupes(session["encadrant_id"])
 
-    return render_template('groupes.html', groupes=groupes)
-
-@app.route('/groupes/add', methods=['GET', 'POST'])
-def add_groupe_page():
-    if "encadrant_id" not in session:
-        return redirect(url_for("login"))
-
-    if request.method == 'POST':
-        add_groupe(request.form['nom_groupe'], request.form['id_projet'])
-        return redirect(url_for('groupes_page'))
-
-    projets = get_projets(session["encadrant_id"])
-    return render_template('add_groupe.html', projets=projets)
-
-@app.route('/groupes/update/<int:Id_group>', methods=['GET', 'POST'])
-def update_groupe_page(Id_group):
-    if "encadrant_id" not in session:
-        return redirect(url_for("login"))
-
-    groupes = []
-    projets = get_projets(session["encadrant_id"])
-    for projet in projets:
-        groupes += get_groupes(projet['Id_projet'])
-
-    groupe = next((g for g in groupes if g['Id_group'] == Id_group), None)
-
-    if request.method == 'POST':
-        update_groupe(Id_group, request.form['nom_groupe'])
-        return redirect(url_for('groupes_page'))
-
-    return render_template('update_groupe.html', groupe=groupe)
-
-@app.route('/groupes/delete/<int:Id_group>')
-def delete_groupe_page(Id_group):
-    if "encadrant_id" not in session:
-        return redirect(url_for("login"))
-
-    delete_groupe(Id_group)
-    return redirect(url_for('groupes_page'))
-
-# ======= ETAPES =======
+    return render_template("groupes.html", groupes=groupes)
 @app.route('/etapes')
 def etapes_page():
     if "encadrant_id" not in session:
@@ -245,11 +222,26 @@ def add_etape_page():
     if "encadrant_id" not in session:
         return redirect(url_for("login"))
 
+    db = get_connection()
+    cursor = db.cursor()
+
+    cursor.execute("""
+        SELECT p.*
+        FROM projet p
+        JOIN groupe g ON p.Id_group = g.Id_group
+        WHERE g.Id_encadrant = %s
+    """, (session["encadrant_id"],))
+
+    projets = cursor.fetchall()
+
     if request.method == 'POST':
-        add_etape(request.form['nom_etape'], request.form['date_debut'], request.form['date_fin'])
+        add_etape(
+            request.form['Nom_etape'],
+            request.form['Id_projet']
+        )
         return redirect(url_for('etapes_page'))
 
-    return render_template('add_etape.html')
+    return render_template('add_etape.html', projets=projets)
 
 @app.route('/etapes/update/<int:Id_etape>', methods=['GET', 'POST'])
 def update_etape_page(Id_etape):
@@ -260,10 +252,15 @@ def update_etape_page(Id_etape):
     etape = next((e for e in etapes if e['Id_etape'] == Id_etape), None)
 
     if request.method == 'POST':
-        update_etape(Id_etape, request.form['nom_etape'], request.form['date_debut'], request.form['date_fin'])
+        update_etape(
+            Id_etape,
+            request.form['Nom_etape'],
+
+        )
         return redirect(url_for('etapes_page'))
 
     return render_template('update_etape.html', etape=etape)
+
 
 @app.route('/etapes/delete/<int:Id_etape>')
 def delete_etape_page(Id_etape):
@@ -273,19 +270,23 @@ def delete_etape_page(Id_etape):
     delete_etape(Id_etape)
     return redirect(url_for('etapes_page'))
 
-
 @app.route('/evaluations')
 def evaluations_page():
     if "encadrant_id" not in session:
         return redirect(url_for("login"))
+
     evaluations = get_evaluations(session["encadrant_id"])
     return render_template('evaluations.html', evaluations=evaluations)
 
 
+# ===== ADD =====
 @app.route('/evaluations/add', methods=['GET', 'POST'])
 def add_evaluation_page():
     if "encadrant_id" not in session:
         return redirect(url_for("login"))
+
+    groupes = get_groupes(session["encadrant_id"])
+    etapes = get_etapes()
 
     if request.method == 'POST':
         add_evaluation(
@@ -297,9 +298,14 @@ def add_evaluation_page():
         )
         return redirect(url_for('evaluations_page'))
 
-    return render_template('add_evaluation.html')
+    return render_template(
+        'add_evaluation.html',
+        groupes=groupes,
+        etapes=etapes
+    )
 
 
+# ===== UPDATE =====
 @app.route('/evaluations/update/<int:Id_Evaluation>', methods=['GET', 'POST'])
 def update_evaluation_page(Id_Evaluation):
     if "encadrant_id" not in session:
@@ -313,18 +319,22 @@ def update_evaluation_page(Id_Evaluation):
         )
         return redirect(url_for('evaluations_page'))
 
-    evaluations = get_evaluations(session["encadrant_id"])
-    evaluation = next((e for e in evaluations if e["Id_Evaluation"] == Id_Evaluation), None)
-    return render_template('update_evaluation.html', evaluation=evaluation)
+    evaluation = get_evaluation_by_id(Id_Evaluation)
+
+    return render_template(
+        'update_evaluation.html',
+        evaluation=evaluation
+    )
 
 
-@app.route('/evaluations/delete/<int:Id_Evaluation>')
+# ===== DELETE =====
+@app.route('/evaluations/delete/<int:Id_Evaluation>', methods=['POST'])
 def delete_evaluation_page(Id_Evaluation):
     if "encadrant_id" not in session:
         return redirect(url_for("login"))
+
     delete_evaluation(Id_Evaluation)
     return redirect(url_for('evaluations_page'))
-
 
 @app.route('/livrables')
 def livrables_encadrant():

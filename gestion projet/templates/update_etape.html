@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>✏️ Modifier Étape</h2>
+
+<form method="POST">
+
+  <label>Nom Étape</label><br>
+  <input type="text" name="Nom_etape" value="{{ etape.Nom_etape }}" required><br><br>
+
+
+  <button type="submit">Modifier</button>
+
+</form>
+
+{% endblock %}

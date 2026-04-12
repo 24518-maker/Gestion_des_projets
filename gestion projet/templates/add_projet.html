@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>➕ Ajouter Projet</h2>
+
+<form method="POST">
+
+  <label>Nom projet</label><br>
+  <input type="text" name="Nom_projet" required><br><br>
+
+  <label>Date début</label><br>
+  <input type="date" name="date_debut" required><br><br>
+
+  <label>Date fin</label><br>
+  <input type="date" name="date_fin" required><br><br>
+
+  <label>Choisir groupe</label><br>
+  <select name="id_group" required>
+    {% for g in groupes %}
+      <option value="{{ g.Id_group }}">{{ g.nom_group }}</option>
+    {% endfor %}
+  </select><br><br>
+
+  <button type="submit">Créer</button>
+
+</form>
+
+{% endblock %}
