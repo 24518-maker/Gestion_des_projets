@@ -3,20 +3,76 @@
 
 {% block content %}
 
-<h2>✏️ Modifier Évaluation</h2>
+<style>
 
-<form method="POST">
+.form-box {
+    max-width: 500px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+.form-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+label {
+    display:block;
+    margin-bottom:6px;
+    font-weight:500;
+    color:#34495e;
+}
+input, textarea {
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    margin-bottom:15px;
+    transition:0.2s;
+}
+input:focus, textarea:focus {
+    outline:none;
+    border-color:#56CFE1;
+    box-shadow:0 0 0 3px rgba(86,207,225,0.15);
+}
+.btn-save {
+    width:100%;
+    background: linear-gradient(90deg,#A8E6CF,#56CFE1);
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
 
-    <label>Note:</label><br>
-    <input type="number" name="Note" value="{{ evaluation.Note }}" required>
-    <br><br>
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow:0 6px 18px rgba(86,207,225,0.25);
+}
 
-    <label>Remarque:</label><br>
-    <textarea name="Remarque">{{ evaluation.Remarque }}</textarea>
-    <br><br>
+</style>
 
-    <button type="submit">💾 Sauvegarder</button>
+<div class="form-box">
 
-</form>
+    <h2 class="form-title">✏ Modifier Évaluation</h2>
+
+    <form method="POST">
+
+        <!-- Note -->
+        <label>Note</label>
+        <input type="number" name="Note" value="{{ evaluation.Note }}" min="0" max="20" required>
+
+        <label>💬 Remarque</label>
+        <textarea name="Remarque" rows="3">{{ evaluation.Remarque }}</textarea>
+
+        <button type="submit" class="btn-save">Sauvegarder</button>
+
+    </form>
+
+</div>
 
 {% endblock %}

@@ -1,25 +1,32 @@
 from db import get_connection
-
-def get_evaluations(Id_Encadrant):
+def get_all_etapes_groups_with_evaluation(Id_Encadrant):
     db = get_connection()
     cursor = db.cursor()
-    cursor.execute(
-        """
-        SELECT e.*, g.nom_group, et.Nom_etape
-        FROM evaluation e
-        JOIN groupe g ON e.Id_group = g.Id_group
-        JOIN etape et ON e.Id_etape = et.Id_etape
-        WHERE e.Id_Encadrant = %s
-        ORDER BY e.Id_Evaluation DESC
-        """,
-        (Id_Encadrant,)
-    )
+
+    cursor.execute("""
+        SELECT 
+            et.Id_etape,
+            et.Nom_etape,
+            g.Id_group,
+            g.nom_group,
+            e.Id_Evaluation,
+            e.Note,
+            e.Remarque,
+            e.date_evaluation
+        FROM groupe g
+        JOIN projet p ON p.Id_group = g.Id_group
+        JOIN etape et ON et.Id_projet = p.Id_projet
+        LEFT JOIN evaluation e 
+            ON e.Id_etape = et.Id_etape 
+           AND e.Id_group = g.Id_group
+        WHERE g.Id_Encadrant = %s
+        ORDER BY et.Id_etape DESC
+    """, (Id_Encadrant,))
+
     data = cursor.fetchall()
     db.close()
     return data
 
-
-# ===== GET ONE =====
 def get_evaluation_by_id(Id_Evaluation):
     db = get_connection()
     cursor = db.cursor()
@@ -31,8 +38,6 @@ def get_evaluation_by_id(Id_Evaluation):
     db.close()
     return data
 
-
-# ===== ADD =====
 def add_evaluation(Note, Remarque, Id_etape, Id_group, Id_Encadrant):
     db = get_connection()
     cursor = db.cursor()
@@ -46,8 +51,6 @@ def add_evaluation(Note, Remarque, Id_etape, Id_group, Id_Encadrant):
     db.commit()
     db.close()
 
-
-# ===== UPDATE =====
 def update_evaluation(Id_Evaluation, Note, Remarque):
     db = get_connection()
     cursor = db.cursor()
@@ -62,8 +65,6 @@ def update_evaluation(Id_Evaluation, Note, Remarque):
     db.commit()
     db.close()
 
-
-# ===== DELETE =====
 def delete_evaluation(Id_Evaluation):
     db = get_connection()
     cursor = db.cursor()

@@ -15,8 +15,8 @@
 
     .sidebar {
       width: 170px;
-      height: 100vh;                  /* يغطي طول الشاشة */
-      position: fixed;                /* Sidebar ثابت */
+      height: 100vh;
+      position: fixed;
       top: 0;
       left: 0;
       padding: 20px;
@@ -44,16 +44,14 @@
     .sidebar a:hover {
       background: rgba(255,255,255,0.2);
     }
-
-    /* ===== CONTENT ===== */
     .content {
-      margin-left: 200px;             /* نفس عرض Sidebar */
-      width: calc(100% - 200px);      /* باقي الشاشة */
+      margin-left: 200px;
+      width: calc(100% - 200px);
       padding: 20px;
-      min-height: 100vh;              /* يغطي طول الشاشة */
+      min-height: 100vh;
       box-sizing: border-box;
-      overflow-y: auto;               /* Scroll عمودي */
-      overflow-x: hidden;             /* منع التمرير يمين/يسار */
+      overflow-y: auto;
+      overflow-x: hidden;
       background: #f4f6f9;
     }
   </style>
@@ -62,15 +60,15 @@
 <body>
 
   <div class="sidebar">
-    <h2>📊 Dashboard</h2>
+    <h2> Dashboard</h2>
 
-    <a href="{{ url_for('dashboard') }}">🏠 Tableau de Bord</a>
-    <a href="{{ url_for('projets_page') }}">📁 Projets</a>
-    <a href="{{ url_for('groupes_page') }}">👥 Groupes</a>
-    <a href="{{ url_for('etapes_page') }}">📝 Étapes</a>
-  <a href="{{ url_for('evaluations_page') }}">🗒️ Évaluations</a>
-    <a href="{{ url_for('livrables_encadrant') }}">📂 Livrables</a>
-    <a href="{{ url_for('logout') }}">🚪 Déconnexion</a>
+    <a href="{{ url_for('dashboard') }}">Tableau de Bord</a>
+    <a href="{{ url_for('projets_page') }}">Projets</a>
+    <a href="{{ url_for('groupes_page') }}"> Groupes</a>
+    <a href="{{ url_for('etapes_page') }}"> Étapes</a>
+  <a href="{{ url_for('evaluations_page') }}">Evaluations</a>
+    <a href="{{ url_for('livrables_encadrant') }}">Livrables</a>
+    <a href="{{ url_for('logout') }}">Déconnexion</a>
   </div>
 
   <div class="content">

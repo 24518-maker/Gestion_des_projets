@@ -3,40 +3,98 @@
 
 {% block content %}
 
-<h2>➕ Ajouter Évaluation</h2>
+<style>
 
-<form method="POST">
+.form-box {
+    max-width: 500px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
 
-    <label>Groupe:</label>
-    <select name="Id_group" required>
-        {% for g in groupes %}
-        <option value="{{ g.Id_group }}">{{ g.nom_group }}</option>
-        {% endfor %}
-    </select>
+.form-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
 
-    <br><br>
+label {
+    display:block;
+    margin-bottom:6px;
+    font-weight:500;
+    color:#34495e;
+}
 
-    <label>Étape:</label>
-    <select name="Id_etape" required>
-        {% for e in etapes %}
-        <option value="{{ e.Id_etape }}">{{ e.Nom_etape }}</option>
-        {% endfor %}
-    </select>
+/* inputs */
+select, input, textarea {
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    margin-bottom:15px;
+    transition:0.2s;
+}
 
-    <br><br>
+/* focus */
+select:focus, input:focus, textarea:focus {
+    outline:none;
+    border-color:#56CFE1;
+    box-shadow:0 0 0 3px rgba(86,207,225,0.15);
+}
 
-    <label>Note:</label>
-    <input type="number" name="Note" required>
+/* button */
+.btn-save {
+    width:100%;
+    background: linear-gradient(90deg,#A8E6CF,#56CFE1);
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
 
-    <br><br>
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow:0 6px 18px rgba(86,207,225,0.25);
+}
 
-    <label>Remarque:</label>
-    <textarea name="Remarque"></textarea>
+</style>
 
-    <br><br>
+<div class="form-box">
 
-    <button type="submit">💾 Enregistrer</button>
+    <h2 class="form-title">➕ Ajouter Évaluation</h2>
 
-</form>
+    <form method="POST">
+
+        <label>Groupe</label>
+        <select name="Id_group" required>
+            {% for g in groupes %}
+            <option value="{{ g.Id_group }}">{{ g.nom_group }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Étape -->
+        <label> Étape</label>
+        <select name="Id_etape" required>
+            {% for e in etapes %}
+            <option value="{{ e.Id_etape }}">{{ e.Nom_etape }}</option>
+            {% endfor %}
+        </select>
+
+        <label> Note</label>
+        <input type="number" name="Note" min="0" max="20" placeholder="Ex: 15" required>
+
+        <label> Remarque</label>
+        <textarea name="Remarque" rows="3" placeholder="Ajouter une remarque..."></textarea>
+
+        <button type="submit" class="btn-save"> Enregistrer</button>
+
+    </form>
+
+</div>
 
 {% endblock %}

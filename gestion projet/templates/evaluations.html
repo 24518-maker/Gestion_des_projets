@@ -1,24 +1,38 @@
- {% extends "base.html" %}
+{% extends "base.html" %}
 {% block title %}Évaluations{% endblock %}
 
 {% block content %}
 
 <style>
+
+.page-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
 .btn-main {
     display:inline-block;
-    background:#4CAF50;
+    background: linear-gradient(90deg,#A8E6CF,#56CFE1);
     color:white;
-    padding:8px 15px;
-    border-radius:8px;
+    padding:10px 16px;
+    border-radius:10px;
     text-decoration:none;
     margin-bottom:15px;
+    font-weight:500;
+    box-shadow:0 6px 18px rgba(86,207,225,0.25);
+    transition:0.3s;
+}
+
+.btn-main:hover {
+    transform: translateY(-3px);
 }
 
 .table-box {
     background:white;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
 }
 
 table {
@@ -27,58 +41,100 @@ table {
 }
 
 th {
-    background:#e9eef6;
-    padding:12px;
+    background: linear-gradient(90deg,#e9f7f5,#dff6f0);
+    padding:14px;
     text-align:left;
+    color:#2c3e50;
 }
 
 td {
-    padding:12px;
-    border-bottom:1px solid #ddd;
+    padding:14px;
+    border-bottom:1px solid #f0f0f0;
+    color:#34495e;
 }
 
 tr:hover {
-    background:#f5f5f5;
-    cursor:pointer;
+    background:#DFF6F0;
 }
+
+.note {
+    padding:4px 10px;
+    border-radius:20px;
+    background:rgba(86,207,225,0.15);
+    color:#56CFE1;
+}
+
+.actions a {
+    margin-right:8px;
+    text-decoration:none;
+}
+
 </style>
 
-<h2 style="color:BLACK; margin-bottom:10px;">📋 Évaluations</h2>
-<a href="{{ url_for('add_evaluation_page') }}" class="btn-main">➕ Ajouter Évaluation</a>
+<h2 class="page-title"> Évaluations</h2>
 
 <div class="table-box">
 <table>
-    <thead>
-        <tr>
-            <th>Étape</th>
-            <th>Groupe</th>
-            <th>Note</th>
-            <th>Remarque</th>
-            <th>Actions</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for eval in evaluations %}
-        <tr>
-            <td>{{ eval.Nom_etape }}</td>
-            <td>{{ eval.nom_group }}</td>
-            <td>{{ eval.Note }}</td>
-            <td>{{ eval.Remarque }}</td>
-            <td>{{eval.date_evaluation}}</td>
-            <td>
-    <a href="{{ url_for('update_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">✏️</a>
+<thead>
+<tr>
+    <th>Étape</th>
+    <th>Groupe</th>
+    <th>Note</th>
+    <th>Remarque</th>
+    <th>Date</th>
+    <th>Actions</th>
+</tr>
+</thead>
 
-    <form method="POST"
-          action="{{ url_for('delete_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}"
-          style="display:inline;">
-        <button type="submit">🗑️</button>
-    </form>
-</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+<tbody>
+
+{% for eval in evaluations %}
+<tr>
+
+    <td> {{ eval.Nom_etape }}</td>
+    <td> {{ eval.nom_group }}</td>
+
+    <td>
+        {% if eval.Note %}
+            <span class="note">{{ eval.Note }}</span>
+        {% else %}
+            —
+        {% endif %}
+    </td>
+
+    <td>
+        {% if eval.Remarque %}
+            {{ eval.Remarque }}
+        {% else %}
+            —
+        {% endif %}
+    </td>
+
+    <td>
+        {% if eval.date_evaluation %}
+            {{ eval.date_evaluation}}
+        {% else %}
+            —
+        {% endif %}
+    </td>
+    <td class="actions">
+
+        {% if eval.Id_Evaluation %}
+            <a href="{{ url_for('update_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">✏update</a>
+            <a href="{{ url_for('delete_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">🗑Delete</a>
+        {% else %}
+            <a href="{{ url_for('add_evaluation_page') }}">Add</a>
+        {% endif %}
+
+    </td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+
 </table>
+
 </div>
 
 {% endblock %}

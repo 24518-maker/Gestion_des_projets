@@ -1,24 +1,82 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>✏️ Modifier Projet</h2>
+<style>
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+.form-box {
+  max-width: 500px;
+  margin: auto;
+}
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #34495e;
+  font-weight: 500;
+}
+input {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+  background: #fff;
+}
+input:focus {
+  border-color: #56CFE1;
+}
+button {
+  margin-top: 18px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #56CFE1;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+button:hover {
+  background: #48b9cc;
+}
+.subtitle {
+  font-size: 13px;
+  color: #7f8c8d;
+  margin-bottom: 10px;
+}
+</style>
+
+<h2 class="page-title">✏Modifier Projet</h2>
+<p class="subtitle">Mettre à jour les informations du projet</p>
+
+<div class="form-box">
 
 <form method="POST">
 
-  <label>Nom projet</label><br>
-  <input type="text" name="nom_projet" value="{{ projet.Nom_projet }}" required>
-  <br><br>
+  <label>Nom projet</label>
+  <input type="text" name="Nom_projet" value="{{ projet.Nom_projet }}" required>
 
-  <label>Date début</label><br>
+  <label>Date début</label>
   <input type="date" name="date_debut" value="{{ projet.date_debut }}" required>
-  <br><br>
 
-  <label>Date fin</label><br>
+  <label>Date fin</label>
   <input type="date" name="date_fin" value="{{ projet.date_fin }}" required>
-  <br><br>
 
   <button type="submit">Modifier</button>
 
 </form>
+
+</div>
 
 {% endblock %}

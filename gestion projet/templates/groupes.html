@@ -3,11 +3,90 @@
 
 {% block content %}
 
-<h2>👥 Groupes</h2>
+<style>
 
-<table style="width:100%;border-collapse:collapse;margin-top:15px;">
+.page-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.table-container {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead tr {
+  background: linear-gradient(to right, #e3ecf7, #f4f7fb);
+  border-radius: 10px;
+}
+
+th {
+  padding: 14px;
+  text-align: left;
+  color: #34495e;
+  font-weight: 600;
+}
+td {
+  padding: 14px;
+  font-size: 14px;
+  color: #2c3e50;
+  vertical-align: top;
+}
+
+/* ✨ hover */
+tbody tr:hover {
+  background: rgba(0, 123, 255, 0.05);
+  transition: 0.3s;
+}
+
+tbody tr {
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.student-name {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.no-project {
+  color: #e74c3c;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.no-data {
+  opacity: 0.6;
+  font-style: italic;
+  color: #7f8c8d;
+}
+
+.empty-msg {
+  text-align: center;
+  padding: 25px;
+  color: #27ae60;
+  font-weight: 500;
+}
+
+</style>
+
+<h2 class="page-title">
+  <span class="icon"></span> Groupes
+</h2>
+
+<div class="table-container">
+
+<table>
   <thead>
-    <tr style="background:#e9eef6;">
+    <tr>
       <th>Nom Groupe</th>
       <th>Étudiants</th>
       <th>Projet</th>
@@ -19,40 +98,37 @@
     {% if groupes and groupes|length > 0 %}
 
       {% for g in groupes %}
-      <tr style="border-bottom:1px solid #ddd;">
+      <tr>
 
         <td>{{ g.nom_group }}</td>
 
         <td>
-          {% if g.etudiants%}
+          {% if g.etudiants %}
             {% for e in g.etudiants %}
-              {{ e.Nom }}<br>
+              <span class="student-name">{{ e.Nom }}</span>
             {% endfor %}
           {% else %}
-            Aucun étudiant
+            <span class="no-data">Aucun étudiant</span>
           {% endif %}
         </td>
 
-        <td>
-          {% if g.projets %}
-          {% for p in g.projets %}
-          <div style="padding:5px 0; border-bottom:1px solid #eee;">
-               {{ p.Nom_projet }}
-          </div>
-          {% endfor %}
-          {% else %}
-            ❌ Aucun projet
-          {% endif %}
-        </td>
-
+       <td>
+  {% if g.projets %}
+    {% for p in g.projets %}
+       {{ p.Nom_projet }}<br>
+    {% endfor %}
+  {% else %}
+    <span class="no-project">Aucun projet</span>
+  {% endif %}
+</td>
       </tr>
       {% endfor %}
 
     {% else %}
 
       <tr>
-        <td colspan="3" style="text-align:center;padding:20px;">
-          💚 Aucun groupe pour le moment
+        <td colspan="3" class="empty-msg">
+          Aucun groupe pour le moment
         </td>
       </tr>
 
@@ -60,5 +136,7 @@
 
   </tbody>
 </table>
+
+</div>
 
 {% endblock %}

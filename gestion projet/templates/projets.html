@@ -2,31 +2,156 @@
 {% block title %}Projets{% endblock %}
 
 {% block content %}
-<h2>📁 Projets</h2>
 
-<a href="{{ url_for('add_projet_page') }}" style="padding:8px 12px;background:#4CAF50;color:white;border-radius:6px;text-decoration:none;">➕ Ajouter Projet</a>
+<style>
 
-<table style="width:100%;border-collapse:collapse;margin-top:15px;">
-  <thead>
-    <tr style="background:#e9eef6;">
-      <th>Nom</th>
-      <th>Date Début</th>
-      <th>Date Fin</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for projet in projets %}
-    <tr style="border-bottom:1px solid #ddd;">
-      <td>{{ projet.Nom_projet }}</td>
-      <td>{{ projet.date_debut }}</td>
-      <td>{{ projet.date_fin }}</td>
-      <td>
-        <a href="{{ url_for('update_projet_page', Id_projet=projet.Id_projet) }}">✏️ Edit</a>
-        <a href="{{ url_for('delete_projet_page', Id_projet=projet.Id_projet) }}">🗑️ Delete</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+.page-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(90deg,#A8E6CF,#56CFE1);
+  color: white;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 500;
+  box-shadow: 0 6px 18px rgba(86,207,225,0.25);
+  transition: 0.3s;
+}
+
+.btn-add:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(86,207,225,0.35);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: 0.3s;
+  border-left: 5px solid #56CFE1;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(90deg,#A8E6CF,#56CFE1);
+}
+.card h3 {
+  margin: 10px 0;
+  color: #2c3e50;
+}
+
+.card p {
+  margin: 6px 0;
+  font-size: 13px;
+  color: #7f8c8d;
+}
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+.edit {
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: rgba(86,207,225,0.15);
+  color: #56CFE1;
+  text-decoration: none;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.edit:hover {
+  background: #56CFE1;
+  color: white;
+}
+.delete {
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: rgba(168,230,207,0.25);
+  color: #27ae60;
+  text-decoration: none;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.delete:hover {
+  background: #27ae60;
+  color: white;
+}
+.empty {
+  text-align: center;
+  color: #7f8c8d;
+  margin-top: 30px;
+}
+
+</style>
+
+<h2 class="page-title">Projets</h2>
+
+<a href="{{ url_for('add_projet_page') }}" class="btn-add">
+  ➕ Ajouter Projet
+</a>
+
+{% if projets and projets|length > 0 %}
+
+<div class="grid">
+
+  {% for projet in projets %}
+  <div class="card" onclick="window.location='/etapes/{{ projet.Id_projet }}'">
+
+    <h3>📌 {{ projet.Nom_projet }}</h3>
+
+    <p> Début: {{ projet.date_debut }}</p>
+    <p>Fin: {{ projet.date_fin }}</p>
+
+    <div class="actions">
+
+      <a class="edit"
+         href="{{ url_for('update_projet_page', Id_projet=projet.Id_projet) }}">
+        ✏Edit
+      </a>
+
+      <a class="delete"
+         href="{{ url_for('delete_projet_page', Id_projet=projet.Id_projet) }}">
+         Delete
+      </a>
+
+    </div>
+
+  </div>
+  {% endfor %}
+
+</div>
+{% else %}
+<p class="empty"> Aucun projet pour le moment</p>
+{% endif %}
+
 {% endblock %}

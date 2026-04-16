@@ -1,28 +1,112 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>➕ Ajouter Projet</h2>
+<style>
+.page-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-box {
+  max-width: 600px;
+  margin: auto;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(14px);
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid rgba(255,255,255,0.3);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(10px);}
+  to {opacity:1; transform: translateY(0);}
+}
+
+label {
+  font-weight: 500;
+  color: #2c3e50;
+  display: block;
+  margin: 10px 0 6px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  outline: none;
+  transition: 0.3s;
+  font-size: 14px;
+  background: white;
+}
+
+input:focus, select:focus {
+  border-color: #56CFE1;
+  box-shadow: 0 0 0 3px rgba(86,207,225,0.2);
+}
+
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg,#A8E6CF,#56CFE1);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 6px 18px rgba(86,207,225,0.25);
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(86,207,225,0.35);
+}
+
+.subtitle {
+  color: #7f8c8d;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+</style>
+
+<h2 class="page-title"> Ajouter Projet</h2>
+<p class="subtitle">Créez un nouveau projet et assignez-le à un groupe</p>
+
+<div class="form-box">
 
 <form method="POST">
 
-  <label>Nom projet</label><br>
-  <input type="text" name="Nom_projet" required><br><br>
+  <label> Nom projet</label>
+  <input type="text" name="Nom_projet" required>
 
-  <label>Date début</label><br>
-  <input type="date" name="date_debut" required><br><br>
+  <label> Date début</label>
+  <input type="date" name="date_debut" required>
 
-  <label>Date fin</label><br>
-  <input type="date" name="date_fin" required><br><br>
+  <label>Date fin</label>
+  <input type="date" name="date_fin" required>
 
-  <label>Choisir groupe</label><br>
+  <label>Choisir groupe</label>
   <select name="id_group" required>
     {% for g in groupes %}
       <option value="{{ g.Id_group }}">{{ g.nom_group }}</option>
     {% endfor %}
-  </select><br><br>
+  </select>
 
-  <button type="submit">Créer</button>
+  <button type="submit">Créer Projet</button>
 
 </form>
+
+</div>
 
 {% endblock %}

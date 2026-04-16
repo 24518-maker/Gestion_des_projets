@@ -23,8 +23,6 @@ def get_encadrant_by_email(email):
     db.close()
     return result
 
-
-# UPDATE PASSWORD
 def update_password(email, new_password):
     db = get_connection()
     cursor = db.cursor()

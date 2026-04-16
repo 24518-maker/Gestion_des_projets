@@ -13,7 +13,6 @@ def get_groupes(encadrant_id):
     for g in groupes:
         id_group = g["Id_group"]
 
-        # الطلاب
         cursor.execute("""
             SELECT * FROM etudiant
             WHERE Id_group = %s

@@ -1,6 +1,5 @@
 from db import get_connection
 
-# GET projets
 def get_projets(encadrant_id):
     db = get_connection()
     cursor = db.cursor()
@@ -15,9 +14,6 @@ def get_projets(encadrant_id):
     projets = cursor.fetchall()
     db.close()
     return projets
-
-
-# CREATE projet
 def add_projet(Nom_projet, date_debut, date_fin, Id_group):
     db = get_connection()
     cursor = db.cursor()
@@ -30,8 +26,6 @@ def add_projet(Nom_projet, date_debut, date_fin, Id_group):
     db.commit()
     db.close()
 
-
-# UPDATE projet
 def update_projet(Id_projet, Nom_projet, date_debut, date_fin):
     db = get_connection()
     cursor = db.cursor()
@@ -45,8 +39,6 @@ def update_projet(Id_projet, Nom_projet, date_debut, date_fin):
     db.commit()
     db.close()
 
-
-# DELETE projet
 def delete_projet(Id_projet):
     db = get_connection()
     cursor = db.cursor()

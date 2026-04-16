@@ -27,8 +27,6 @@ def get_etapes_by_projet(Id_projet):
     db.close()
     return etapes
 
-
-# ADD ETAPE
 def add_etape(Nom_etape, Id_projet):
     db = get_connection()
     cursor = db.cursor()
@@ -41,8 +39,6 @@ def add_etape(Nom_etape, Id_projet):
     db.commit()
     db.close()
 
-
-# UPDATE ETAPE
 def update_etape(Id_etape, Nom_etape):
     db = get_connection()
     cursor = db.cursor()
@@ -56,8 +52,6 @@ def update_etape(Id_etape, Nom_etape):
     db.commit()
     db.close()
 
-
-# DELETE ETAPE
 def delete_etape(Id_etape):
     db = get_connection()
     cursor = db.cursor()

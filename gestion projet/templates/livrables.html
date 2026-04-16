@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Livrables</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:radial-gradient(circle at top left,#e6f7ff,#38bdf8 30%,#145214);
+  color:white;
+}
+
+/* BACK BUTTON */
+.back-btn{
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  padding: 10px 15px;
+  background: linear-gradient(135deg,#38bdf8,#84cc16);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: 0.3s;
+  z-index: 999;
+}
+
+.back-btn:hover{
+  transform: scale(1.1);
+}
+
+/* CONTAINER */
+.container{
+  padding:80px 20px;
+}
+
+/* CARD */
+.card{
+  background:rgba(0,0,0,0.25);
+  padding:20px;
+  border-radius:15px;
+  margin-bottom:20px;
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+th{
+  background:rgba(20,82,36,0.9);
+  padding:12px;
+  text-align:left;
+}
+
+td{
+  padding:12px;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+}
+
+/* BUTTON */
+.btn{
+  padding:6px 10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:#38bdf8;
+  color:white;
+  transition:0.3s;
+}
+
+.btn:hover{
+  transform:scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<a href="javascript:history.back()" class="back-btn">⬅ Retour</a>
+
+<div class="container">
+
+<!-- LAST FILE -->
+<div class="card">
+  <h2>📁 Dernier fichier envoyé</h2>
+  <p><b>Nom:</b> </p>
+  <p><b>Étape:</b> </p>
+  <p><b>Date:</b> </p>
+</div>
+
+<!-- TABLE -->
+<div class="card">
+<h2>📊 Tous les Livrables</h2>
+
+<table>
+<tr>
+<th>Id</th>
+<th>Nom du fichier</th>
+<th>Étape</th>
+<th>Date d'envoi</th>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><button class="btn">⬇ Télécharger</button></td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><button class="btn">⬇ Télécharger</button></td>
+</tr>
+
+</table>
+</div>
+
+</div>
+
+</body>
+</html>

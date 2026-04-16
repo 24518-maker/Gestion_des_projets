@@ -1,22 +1,94 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>➕ Ajouter Étape</h2>
+<style>
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #7f8c8d;
+  margin-bottom: 18px;
+}
+
+.form-box {
+  max-width: 520px;
+  margin: auto;
+}
+
+/* 🏷 labels */
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #34495e;
+  font-weight: 500;
+}
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+  background: #fff;
+}
+
+input:focus, select:focus {
+  border-color: #56CFE1;
+  box-shadow: 0 0 0 3px rgba(86,207,225,0.2);
+}
+
+button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 11px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg,#A8E6CF,#56CFE1);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 6px 18px rgba(86,207,225,0.25);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(86,207,225,0.35);
+}
+
+</style>
+
+<h2 class="page-title">➕ Ajouter Étape</h2>
+<p class="subtitle">Créer une nouvelle étape et l’associer à un projet</p>
+
+<div class="form-box">
 
 <form method="POST">
 
-  <label>Nom Étape</label><br>
-  <input type="text" name="Nom_etape" required><br><br>
+  <label> Nom Étape</label>
+  <input type="text" name="Nom_etape" placeholder="Ex: Analyse / Design / Dev..." required>
 
-  <label>Choisir Projet</label><br>
+  <label>Choisir Projet</label>
   <select name="Id_projet" required>
     {% for p in projets %}
       <option value="{{ p.Id_projet }}">{{ p.Nom_projet }}</option>
     {% endfor %}
-  </select><br><br>
+  </select>
 
-  <button type="submit">Créer</button>
+  <button type="submit">Créer Étape</button>
 
 </form>
+
+</div>
 
 {% endblock %}

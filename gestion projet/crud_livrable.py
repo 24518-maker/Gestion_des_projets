@@ -7,9 +7,9 @@ def get_livrables(Id_Encadrant):
         "SELECT l.Id_fichier, l.nom_fichier, g.nom_group, e.Nom_etape "
         "FROM livrable l "
         "JOIN groupe g ON l.Id_group = g.Id_group "
-        "JOIN projet p ON g.Id_projet = p.Id_projet "
+        "JOIN projet p ON p.Id_group = g.Id_group "
         "JOIN etape e ON l.Id_etape = e.Id_etape "
-        "WHERE p.Id_Encadrant=%s",
+        "WHERE g.Id_Encadrant=%s",
         (Id_Encadrant,)
     )
     livrables = cursor.fetchall()
