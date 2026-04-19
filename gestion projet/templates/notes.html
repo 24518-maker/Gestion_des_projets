@@ -5,237 +5,158 @@
 <title>Notes & Remarques</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at top left,#e6f7ff, #38bdf8 30%, #145214 100%);
-  color: white;
+body{
+  margin:0;
+  font-family: Arial;
+  background:#f4f6f9;
 }
 
-/* HEADER */
-header {
-  background: linear-gradient(135deg, rgba(20, 82, 36, 0.85), rgba(56,189,248,0.8));
-  padding: 15px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
+.header{
+  background: linear-gradient(90deg, #56CFE1, #A8E6CF);
+  color:white;
+  padding:18px 25px;
+  font-size:20px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
 }
 
-/* CONTAINER */
-.container {
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 15px;
+.header-title{
+  flex:1;
+  text-align:center;
+}
+
+.back-btn{
+  text-decoration:none;
+  color:white;
+  font-size:14px;
+  background:rgba(255,255,255,0.15);
+  padding:6px 12px;
+  border-radius:8px;
+  transition:0.3s;
+}
+
+.back-btn:hover{
+  background:rgba(255,255,255,0.3);
+}
+
+/* ===== GRID ===== */
+.container{
+  padding:25px;
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap:15px;
 }
 
 /* CARD */
-.card {
-  background: linear-gradient(135deg, rgba(20, 82, 36, 0.85), rgba(56,189,248,0.3));
-  padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
-  transition: 0.3s;
+.card{
+  background:white;
+  border-radius:15px;
+  padding:18px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  transition:0.3s;
 }
 
-.card:hover {
-  transform: scale(1.03);
+.card:hover{
+  transform:translateY(-5px);
 }
 
-/* NOTE BADGES */
-.badge {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-top: 5px;
+.title{
+  font-weight:bold;
+  font-size:16px;
+  margin-bottom:10px;
 }
 
-.good {
-  background: #22c55e;
+.badge{
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:8px;
+  font-size:13px;
+  margin-top:5px;
 }
 
-.medium {
-  background: #f59e0b;
+.good{ background:#22c55e; color:white; }
+.medium{ background:#f59e0b; color:white; }
+.bad{ background:#ef4444; color:white; }
+
+.info{
+  margin-top:6px;
+  font-size:14px;
+  color:#374151;
 }
 
-.bad {
-  background: #ef4444;
+.small{
+  font-size:12px;
+  color:#6b7280;
 }
 
-/* TEXT */
-.title {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.remark {
-  margin-top: 10px;
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-.date {
-  font-size: 12px;
-  opacity: 0.7;
+.empty{
+  text-align:center;
+  margin-top:50px;
+  color:#6b7280;
 }
 </style>
 </head>
 
 <body>
-<a href="javascript:history.back()" class="back-btn">⬅ Retour</a>
 
-<style>
-:root {
-  --primary: #56CFE1;
-  --secondary: #A8E6CF;
-  --bg: #f4f6f9;
-  --card: #f8fafc;
-  --text: #1f2937;
-}
+<!-- HEADER -->
+<div class="header">
 
-/* ===== BODY ===== */
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
+    <a href="javascript:history.back()" class="back-btn">⬅ Retour</a>
 
-/* ===== HEADER ===== */
-header {
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  padding: 15px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-  color: white;
-}
+    <div class="header-title"> Notes & Remarques</div>
 
-/* ===== CONTAINER ===== */
-.container {
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 15px;
-}
+    <div style="width:80px;"></div>
 
-/* ===== CARD ===== */
-.card {
-  background: var(--card);
-  padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  transition: 0.3s;
-}
+</div>
 
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* ===== BADGES ===== */
-.badge {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-top: 5px;
-  color: white;
-}
-
-.good {
-  background: #22c55e;
-}
-
-.medium {
-  background: #f59e0b;
-}
-
-.bad {
-  background: #ef4444;
-}
-
-/* ===== TEXT ===== */
-.title {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.remark {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #4b5563;
-}
-
-.date {
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-.back-btn {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  padding: 10px 15px;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  color: white;
-  text-decoration: none;
-  border-radius: 12px;
-  font-weight: bold;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  transition: 0.3s;
-  z-index: 999;
-}
-
-.back-btn:hover {
-  transform: scale(1.08);
-}
-</style>
-</style>
-<header>
-📊 Notes & Remarques du Projet
-</header>
-
+<!-- CONTENT -->
 <div class="container">
 
-<!-- CARD 1 -->
-<div class="card">
-  <div class="title"></div>
+{% if data and data|length > 0 %}
 
-  <div class="badge good"></div>
+    {% for n in data %}
 
-  <div class="remark">
+    <div class="card">
 
-  </div>
+        <div class="title">📁 {{ n.Nom_projet or 'Projet' }}</div>
 
-  <div class="date"></div>
-</div>
+        <div class="info"> Étape: {{ n.Nom_etape or '-' }}</div>
 
-<!-- CARD 2 -->
-<div class="card">
-  <div class="title"></div>
+        <!-- NOTE -->
+        <div class="badge
+            {% if n.Note and n.Note >= 15 %}good
+            {% elif n.Note and n.Note >= 10 %}medium
+            {% else %}bad
+            {% endif %}">
+            ⭐ Note: {{ n.Note if n.Note is not none else 'Non évalué' }}
+        </div>
 
-  <div class="badge medium"></div>
+        <!-- REMARQUE -->
+        <div class="info">📝 {{ n.Remarque or 'Aucune remarque' }}</div>
 
-  <div class="remark">
+        <!-- FILE -->
+        {% if n.nom_fichier %}
+        <div class="info">📄 {{ n.nom_fichier }}</div>
+        {% endif %}
 
-  </div>
+        <!-- DATE -->
+        <div class="small">📅 {{ n.date_evaluation or '—' }}</div>
 
-  <div class="date"></div>
-</div>
+    </div>
 
-<!-- CARD 3 -->
-<div class="card">
-  <div class="title"> </div>
+    {% endfor %}
 
-  <div class="badge bad"></div>
+{% else %}
 
-  <div class="remark">
+    <div class="empty">
+        Aucun notes disponibles pour le moment
+    </div>
 
-  </div>
-
-  <div class="date"></div>
-</div>
+{% endif %}
 
 </div>
 

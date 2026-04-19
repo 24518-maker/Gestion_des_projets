@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unitsystem type="class">
+  <name>British engineering units</name>
+  <base type="class">
+    <length type="class">
+      <scale type="double">0.3048</scale>
+      <units type="stringarray">
+        {"foot"}
+      </units>
+      <symbols type="stringarray">
+        {"ft"}
+      </symbols>
+    </length>
+    <mass type="class">
+      <scale type="double">14.59390293720636</scale>
+      <units type="stringarray">
+        {"slug"}
+      </units>
+    </mass>
+    <temperature type="class">
+      <scale type="double">0.55555555555556</scale>
+      <offset type="double">459.67</offset>
+      <units type="stringarray">
+        {"Fahrenheit"}
+      </units>
+      <symbols type="stringarray">
+        {"degF"}
+      </symbols>
+    </temperature>
+  </base>
+  <derived type="class">
+    <force type="class">
+      <dimension type="intarray">
+        {1,1,-2,0,0,0,0,0}
+      </dimension>
+      <units type="stringarray">
+        {"pound-force"}
+      </units>
+      <symbols type="stringarray">
+        {"lbf"}
+      </symbols>
+    </force>
+  </derived>
+  <additional type="class">
+    <energy type="class">
+      <scale type="double">1055.05585262</scale>
+      <dimension>energy</dimension>
+      <symbols type="stringarray">
+        {"Btu"}
+      </symbols>
+    </energy>
+  </additional>
+</unitsystem>
+

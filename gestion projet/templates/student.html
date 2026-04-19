@@ -2,254 +2,312 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Accueil Étudiant</title>
+<title>Student Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
+body{
+margin:0;
+font-family:Inter;
+background:#f5f7fb;
+color:#111827;
+}
+
+header{
+background:linear-gradient(90deg,#56CFE1,#A8E6CF);
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+font-weight:600;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+position: fixed;
+top: 0;
+left: -260px;
+width: 260px;
+height: 100%;
+background: linear-gradient(180deg,#56CFE1,#A8E6CF);
+padding-top: 60px;
+transition: 0.3s ease;
+z-index: 9999;
+box-shadow: 5px 0 20px rgba(0,0,0,0.15);
+}
+
+.sidebar a{
+display:block;
+padding:14px 18px;
+color:white;
+text-decoration:none;
+font-weight:500;
+}
+
+.sidebar a:hover{
+background: rgba(255,255,255,0.2);
+}
+
+.menu-btn{
+font-size:24px;
+cursor:pointer;
+}
+
+/* ===== MAIN ===== */
+.main{
+padding:20px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:16px;
+box-shadow:0 8px 20px rgba(0,0,0,0.06);
+}
+
+.project{
+border:1px solid #eee;
+padding:12px;
+border-radius:12px;
+margin-bottom:10px;
+background:#fafafa;
+}
+
+.badge{
+padding:5px 10px;
+border-radius:8px;
+font-size:12px;
+color:white;
+}
+.green{background:#22c55e;}
+.red{background:#ef4444;}
+.orange{background:#f59e0b;}
+
+.btn{
+padding:8px 10px;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:8px;
+}
+.upload{background:#56CFE1;}
+
+.empty{color:#9ca3af;}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #eee;
+text-align:left;
+}
+
+/* ===== PROGRESS GLOBAL ===== */
+.circle{
+width:150px;
+height:150px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:auto;
+background: conic-gradient(
+    {% if global_progress < 40 %}
+        #ef4444 {{ global_progress }}%,
+    {% elif global_progress < 70 %}
+        #f59e0b {{ global_progress }}%,
+    {% else %}
+        #22c55e {{ global_progress }}%,
+    {% endif %}
+    #e5e7eb 0%
+);
+}
+
+.inside{
+width:110px;
+height:110px;
+background:white;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+}
 </style>
 </head>
 
 <body>
-<style>
-:root {
-  --primary: #56CFE1;
-  --secondary: #A8E6CF;
-  --bg: #f4f6f9;
-  --card: #f8fafc;
-  --text: #1f2937;
-}
 
-/* ===== BODY ===== */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
+<div id="sidebar" class="sidebar">
+<a href="/student">Accueil</a>
+<a href="/groupe">Groupe</a>
+<a href="/livrables">Livrables</a>
+<a href="/notes">Notes&Remarques</a>
+<a href="/logout">Déconnexion</a>
+</div>
 
-/* ===== HEADER ===== */
-header {
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-}
-
-/* ===== SIDEBAR ===== */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: -260px;
-  width: 200px;
-  height: 100%;
-  background: linear-gradient(180deg, var(--primary), var(--secondary));
-  padding-top: 20px;
-  transition: 0.3s ease;
-  z-index: 9999;
-}
-
-.menu-btn {
-  font-size: 28px;
-  cursor: pointer;
-  color: white;
-}
-
-.sidebar a {
-  display: block;
-  padding: 15px;
-  color: white;
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.sidebar a:hover {
-  background: rgba(255,255,255,0.2);
-}
-
-/* ===== MAIN ===== */
-.main {
-  padding: 20px;
-}
-
-/* ===== CARD ===== */
-.card {
-  background: var(--card);
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-}
-
-/* ===== BUTTONS ===== */
-.btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: white;
-  margin: 3px;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  opacity: 0.85;
-}
-
-.upload { background: var(--primary); }
-.edit { background: #f59e0b; }
-.delete { background: #ef4444; }
-
-/* ===== TABLE ===== */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  background: var(--card);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-th {
-  background: #e9eef6;
-  padding: 10px;
-}
-
-td {
-  padding: 10px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-tr:hover {
-  background: #ecfeff;
-}
-
-/* ===== CIRCLE PROGRESS ===== */
-.circle-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.circle {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: conic-gradient(var(--primary) 0%, #e5e7eb 0%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.inside {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  background: var(--card);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-}
-</style>
 <header>
-<span onclick="toggleMenu()" style="font-size:25px;cursor:pointer;">☰</span>
-<h2> Accueil Étudiant</h2>
-<a href="/logout" style="color:white;"> Déconnexion</a>
+<span class="menu-btn" onclick="toggleMenu()">☰</span>
+<div>🎓 Student Dashboard</div>
+<a href="/logout" style="color:white;">Logout</a>
 </header>
 
-<!-- SIDEBAR -->
-<div id="sidebar" class="sidebar">
-<a href="/student"> Accueil</a>
-<a href="/notes">Notes</a>
-<a href="/livrables">Livrables</a>
-<a href="/groupe"> Groupe</a>
-<a href="/logout"> Déconnexion</a>
-</div>
 <div class="main">
 
+<!-- ===== INFOS + PROJECTS ===== -->
 <div class="card">
-<h3> Informations</h3>
+
+<h3>Informations</h3>
 
 <p><b>Nom:</b> {{ nom_etudiant }}</p>
+<p><b>Matricule:</b> {{ matricule }}</p>
 <p><b>Groupe:</b> {{ groupe_nom }}</p>
 
-<p><b>Projets:</b>
-{% if projet and projet.Nom_projet %}
-{{ projet.Nom_projet }}
+<hr>
+
+<h4>📁 Projets</h4>
+
+{% for p in projets %}
+
+<div class="project">
+
+<h4>{{ p.Nom_projet }}</h4>
+<p>📅 {{ p.date_debut }} → {{ p.date_fin }}</p>
+
+{% if p.status == "done" %}
+    <span class="badge green">✅ Terminé</span>
+
+{% elif p.status == "not_started" %}
+    <span class="badge red">⛔ Pas commencé</span>
+
+{% elif p.status == "late" %}
+    <span class="badge orange">⚠️ En retard</span>
+
 {% else %}
-Aucun
+    <span class="badge green">🟢 En cours</span>
 {% endif %}
-</p>
 
 </div>
 
-<!-- UPLOAD -->
+{% endfor %}
+
+</div>
+
+<!-- ===== UPLOAD ===== -->
 <div class="card">
-<h3>📤 Envoyer un livrable</h3>
+
+<h3>Envoi des livrables</h3>
+
+{% for p in projets %}
+
+<div class="project">
+
+<h4>{{ p.Nom_projet }}</h4>
+
+{% if p.status == "not_started" %}
+<p style="color:#ef4444">⛔ Le projet n’a pas encore commencé</p>
+
+{% elif p.status == "late" %}
+<p style="color:#ef4444">⚠️ Le projet est en retard</p>
+
+{% elif p.status == "done" %}
+<p style="color:#22c55e">✅ Toutes les étapes sont complétées</p>
+
+{% else %}
+
+<p style="color:#22c55e">🟢 Envoi autorisé</p>
 
 <form action="/upload" method="POST" enctype="multipart/form-data">
 
-<select name="etape" required>
-<option value="">Choisir étape</option>
+<select name="etape">
+<option>Choisir étape</option>
 
-{% for e in etapes %}
-<option value="{{ e.Id_etape }}">
-{{ e.Nom_etape }}
-</option>
+{% for e in etapes if e.Id_projet == p.Id_projet %}
+<option value="{{ e.Id_etape }}">{{ e.Nom_etape }}</option>
 {% endfor %}
 
 </select>
 
-<input type="file" name="file" required>
+<input type="file" name="file">
 
-<button class="btn upload" name="action" value="upload">Envoyer</button>
-<button class="btn edit" name="action" value="edit">Modifier</button>
-<button class="btn delete" name="action" value="delete">Supprimer</button>
+<button class="btn upload">Envoyer</button>
 
 </form>
+
+{% endif %}
+
 </div>
 
-<!-- TABLE ETAPES -->
-<div class="card">
-<h3>📊 Suivi des étapes</h3>
+{% endfor %}
+
+</div>
+
+<!-- ===== TABLE ===== -->
+<div class="card" style="grid-column:1/3">
+
+<h3>Suivi des étapes</h3>
 
 <table>
+
 <tr>
 <th>Étape</th>
-<th>Dernier fichier</th>
+<th>Projet</th>
+<th>Document</th>
 <th>Note</th>
 <th>Remarque</th>
-<th>Actions</th>
 </tr>
 
-{% for e in etapes %}
+{% for p in projets %}
+{% for e in etapes if e.Id_projet == p.Id_projet %}
+
 <tr>
+
 <td>{{ e.Nom_etape }}</td>
-<td>{{ e.last_file }}</td>
-<td>{{ e.Note }}</td>
-<td>{{ e.Remarque }}</td>
+<td>{{ e.Nom_projet }}</td>
+
 <td>
-<button class="btn upload">envoyer</button>
-<button class="btn edit">Modifier</button>
-<button class="btn delete">Supprimer</button>
+{% if e.nom_fichier %}
+<a href="{{ url_for('uploaded_file', filename=e.nom_fichier) }}">
+    Ouvrir
+</a>
+{% else %}
+<span class="empty">Aucun</span>
+{% endif %}
 </td>
+
+<td>{{ e.Note if e.Note else "—" }}</td>
+<td>{{ e.Remarque if e.Remarque else "—" }}</td>
+
 </tr>
+
 {% endfor %}
+{% endfor %}
+
 </table>
+
 </div>
 
-<!-- PROGRESS -->
-<div class="card">
-<h3>📊 Progression du projet</h3>
+<!-- ===== GLOBAL PROGRESS ===== -->
+<div class="card" style="grid-column:1/3">
 
-<div class="circle-container">
-<div class="circle" id="circle">
+<h3>Progression globale</h3>
+
+<div class="circle">
 <div class="inside">
-<span id="percent">0%</span>
+{{ global_progress }}%
 </div>
 </div>
-</div>
+
 </div>
 
 </div>
@@ -257,22 +315,8 @@ Aucun
 <script>
 function toggleMenu(){
 const sidebar = document.getElementById("sidebar");
-
-if(sidebar.style.left === "0px"){
-sidebar.style.left = "-260px";
-} else {
-sidebar.style.left = "0px";
+sidebar.style.left = (sidebar.style.left === "0px") ? "-260px" : "0px";
 }
-}
-
-function setProgress(percent){
-document.getElementById("circle").style.background =
-`conic-gradient(#38bdf8 ${percent}%, #ddd ${percent}%)`;
-
-document.getElementById("percent").innerText = percent + "%";
-}
-
-setProgress(0);
 </script>
 
 </body>

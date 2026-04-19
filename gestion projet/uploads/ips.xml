@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unitsystem type="class">
+  <name>IPS</name>
+  <base type="class">
+    <length type="class">
+      <scale type="double">0.0254</scale>
+      <units type="stringarray">
+        {"inch"}
+      </units>
+      <symbols type="stringarray">
+        {"in"}
+      </symbols>
+    </length>
+    <mass type="class">
+      <scale type="double">0.45359237</scale>
+      <units type="stringarray">
+        {"pound"}
+      </units>
+      <symbols type="stringarray">
+        {"lb"}
+      </symbols>
+    </mass>
+    <temperature type="class">
+      <scale type="double">0.55555555555556</scale>
+      <offset type="double">459.67</offset>
+      <units type="stringarray">
+        {"Fahrenheit"}
+      </units>
+      <symbols type="stringarray">
+        {"degF"}
+      </symbols>
+    </temperature>
+  </base>
+  <derived type="class">
+  </derived>
+</unitsystem>
+

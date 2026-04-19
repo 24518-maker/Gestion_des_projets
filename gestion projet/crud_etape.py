@@ -1,6 +1,6 @@
 from db import get_connection
 
-def get_etapes():
+def get_etapes(encadrant_id):
     db = get_connection()
     cursor = db.cursor()
 
@@ -8,7 +8,9 @@ def get_etapes():
         SELECT e.*, p.Nom_projet
         FROM etape e
         JOIN projet p ON e.Id_projet = p.Id_projet
-    """)
+        JOIN groupe g ON p.Id_group= g.Id_group
+        WHERE g.Id_Encadrant= %s
+    """,(encadrant_id,))
 
     etapes = cursor.fetchall()
     db.close()

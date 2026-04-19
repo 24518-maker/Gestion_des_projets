@@ -35,20 +35,3 @@ def update_password(email, new_password):
     db.commit()
     db.close()
 
-# def get_etudiants_by_encadrant(id_encadrant):
-#     db = get_connection()
-#     cursor = db.cursor()
-#
-#     cursor.execute("""
-#         SELECT etudiant.*
-#         FROM etudiant
-#         JOIN groupe ON etudiant.id_groupe = groupe.id_groupe
-#         JOIN projet ON groupe.id_projet = projet.id_projet
-#         WHERE projet.id_encadrant = %s
-#     """, (id_encadrant,))
-#
-#     result = cursor.fetchall()
-#     db.close()
-#     return result
-
-

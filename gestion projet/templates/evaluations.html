@@ -4,28 +4,11 @@
 {% block content %}
 
 <style>
-
 .page-title {
     font-size: 26px;
     font-weight: 600;
     color: #2c3e50;
     margin-bottom: 15px;
-}
-.btn-main {
-    display:inline-block;
-    background: linear-gradient(90deg,#A8E6CF,#56CFE1);
-    color:white;
-    padding:10px 16px;
-    border-radius:10px;
-    text-decoration:none;
-    margin-bottom:15px;
-    font-weight:500;
-    box-shadow:0 6px 18px rgba(86,207,225,0.25);
-    transition:0.3s;
-}
-
-.btn-main:hover {
-    transform: translateY(-3px);
 }
 
 .table-box {
@@ -44,17 +27,11 @@ th {
     background: linear-gradient(90deg,#e9f7f5,#dff6f0);
     padding:14px;
     text-align:left;
-    color:#2c3e50;
 }
 
 td {
     padding:14px;
     border-bottom:1px solid #f0f0f0;
-    color:#34495e;
-}
-
-tr:hover {
-    background:#DFF6F0;
 }
 
 .note {
@@ -68,17 +45,18 @@ tr:hover {
     margin-right:8px;
     text-decoration:none;
 }
-
 </style>
 
-<h2 class="page-title"> Évaluations</h2>
+<h2 class="page-title">Évaluations</h2>
 
 <div class="table-box">
 <table>
+
 <thead>
 <tr>
     <th>Étape</th>
     <th>Groupe</th>
+    <th>Projet</th>
     <th>Note</th>
     <th>Remarque</th>
     <th>Date</th>
@@ -91,8 +69,9 @@ tr:hover {
 {% for eval in evaluations %}
 <tr>
 
-    <td> {{ eval.Nom_etape }}</td>
-    <td> {{ eval.nom_group }}</td>
+    <td>{{ eval.Nom_etape }}</td>
+    <td>{{ eval.Nom_group }}</td>
+    <td>{{ eval.Nom_projet }}</td>
 
     <td>
         {% if eval.Note %}
@@ -103,27 +82,24 @@ tr:hover {
     </td>
 
     <td>
-        {% if eval.Remarque %}
-            {{ eval.Remarque }}
-        {% else %}
-            —
-        {% endif %}
+        {{ eval.Remarque if eval.Remarque else '—' }}
     </td>
 
     <td>
-        {% if eval.date_evaluation %}
-            {{ eval.date_evaluation}}
-        {% else %}
-            —
-        {% endif %}
+        {{ eval.date_evaluation if eval.date_evaluation else '—' }}
     </td>
+
     <td class="actions">
 
         {% if eval.Id_Evaluation %}
-            <a href="{{ url_for('update_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">✏update</a>
-            <a href="{{ url_for('delete_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">🗑Delete</a>
+            <a href="{{ url_for('update_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">✏ Update</a>
+            <a href="{{ url_for('delete_evaluation_page', Id_Evaluation=eval.Id_Evaluation) }}">🗑 Delete</a>
         {% else %}
-            <a href="{{ url_for('add_evaluation_page') }}">Add</a>
+            <a href="{{ url_for(
+                'add_evaluation_page',
+                etape_id=eval.Id_etape,
+                group_id=eval.Id_group
+            ) }}">➕ Add</a>
         {% endif %}
 
     </td>
@@ -134,7 +110,6 @@ tr:hover {
 </tbody>
 
 </table>
-
 </div>
 
 {% endblock %}

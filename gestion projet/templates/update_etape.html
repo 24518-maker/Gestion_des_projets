@@ -71,16 +71,6 @@ button:hover {
   <label>Nom Étape</label>
   <input type="text" name="Nom_etape" value="{{ etape.Nom_etape }}" required>
 
-  <label> Projet</label>
-  <select name="Id_projet" required>
-    {% for p in projets %}
-      <option value="{{ p.Id_projet }}"
-        {% if p.Id_projet == etape.Id_projet %}selected{% endif %}>
-        {{ p.Nom_projet }}
-      </option>
-    {% endfor %}
-  </select>
-
   <button type="submit"> Modifier</button>
 
 </form>

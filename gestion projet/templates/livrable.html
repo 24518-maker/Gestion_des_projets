@@ -2,33 +2,156 @@
 {% block title %}Livrables{% endblock %}
 
 {% block content %}
-<h2> Livrables des Projets</h2>
 
-<table style="width:100%;border-collapse:collapse;margin-top:15px;">
-    <thead>
-        <tr style="background:#e9eef6;">
-            <th>Fichier</th>
-            <th>Groupe</th>
-            <th>Étape</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for livrable in livrables %}
-        <tr style="border-bottom:1px solid #ddd;">
-            <td>
-                <a href="{{ url_for('static', filename='uploads/' + livrable.nom_fichier) }}" target="_blank">
-                    {{ livrable.nom_fichier }}
-                </a>
-            </td>
-            <td>{{ livrable.nom_groupe }}</td>
-            <td>{{ livrable.nom_etape }}</td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="3" style="text-align:center;">Aucun livrable trouvé</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<style>
+.container{
+    padding:25px;
+    background:#f9fafb;
+    min-height:100vh;
+}
+
+h2{
+    margin-bottom:25px;
+    color:#111827;
+    font-size:26px;
+    font-weight:700;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:18px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+    transition:0.3s;
+    border:1px solid #eef2f7;
+    position:relative;
+    overflow:hidden;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 15px 35px rgba(0,0,0,0.12);
+}
+
+/* FILE */
+.file{
+    font-weight:600;
+    color:#2563eb;
+    text-decoration:none;
+    font-size:15px;
+    display:block;
+    margin-bottom:12px;
+}
+
+.file:hover{
+    text-decoration:underline;
+}
+
+/* BADGES */
+.badges{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.badge{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 10px;
+    border-radius:10px;
+    font-size:12px;
+    font-weight:600;
+    width:fit-content;
+}
+
+/* COLORS */
+.project{
+    background:linear-gradient(135deg,#ede9fe,#c7d2fe);
+    color:#3730a3;
+}
+
+.group{
+    background:linear-gradient(135deg,#dbeafe,#93c5fd);
+    color:#1e3a8a;
+}
+
+.step{
+    background:linear-gradient(135deg,#dcfce7,#86efac);
+    color:#14532d;
+}
+
+/* EMPTY */
+.empty{
+    text-align:center;
+    color:#9ca3af;
+    margin-top:20px;
+}
+</style>
+
+<div class="container">
+
+<h2>📁 Livrables des Projets</h2>
+
+{% if livrables|length == 0 %}
+    <p class="empty">Aucun livrable trouvé</p>
+{% else %}
+
+<div class="grid">
+
+    {% for livrable in livrables %}
+
+    <div class="card">
+
+        <!-- FILE -->
+        <div>
+            {% if livrable.nom_fichier %}
+            <a class="file"
+               href="{{ url_for('uploaded_file', filename=livrable.nom_fichier) }}"
+               target="_blank">
+               📄 {{ livrable.nom_fichier }}
+            </a>
+            {% else %}
+            <span class="empty">Aucun fichier</span>
+            {% endif %}
+        </div>
+
+        <!-- BADGES -->
+        <div class="badges">
+
+            <!-- PROJECT -->
+            <div class="badge project">
+                🏗{{ livrable.Nom_projet }}
+            </div>
+
+            <!-- GROUP -->
+            <div class="badge group">
+                 {{ livrable.nom_group }}
+            </div>
+
+            <!-- STEP -->
+            <div class="badge step">
+                 {{ livrable.Nom_etape }}
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+</div>
+
 {% endblock %}
-

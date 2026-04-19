@@ -121,7 +121,9 @@ tr:hover {
  </div>
 
  <div style="display:flex; align-items:center; gap:10px;">
- <img src="{{ url_for('static', filename='images/' + photo_encadrant) }}"
+ <img src="{{ url_for('static', filename='images/' + photo_encadrant) if photo_encadrant else url_for('static', filename='images/default.png') }}"
+     onerror="this.src='{{ url_for('static', filename='images/default.png') }}'"
+     alt="photo"
  style="width:50px;height:50px;border-radius:50%;">
  <span>{{ nom_encadrant }}</span>
  <a href="{{ url_for('logout') }}" style="color:white;">Déconnexion</a>
@@ -162,49 +164,51 @@ tr:hover {
 
 <!-- TABLE -->
 <div class="box">
- <h3>Liste des Projets</h3>
+  <h3>Liste des Projets</h3>
 
- <table>
- <thead>
- <tr>
- <th>Nom</th>
- <th>État</th>
- <th>Groupes</th>
- <th>Date Fin</th>
- </tr>
- </thead>
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>État</th>
+        <th>Groupes</th>
+        <th>Date Fin</th>
+      </tr>
+    </thead>
 
- <tbody>
- {% for projet in projets %}
- <tr onclick="window.location='/etapes/{{ projet.Id_projet }}'">
+    <tbody>
+      {% for projet in projets %}
+      <tr onclick="window.location='/etapes/{{ projet.Id_projet }}'" style="cursor:pointer;">
 
- <td>{{ projet.Nom_projet }}</td>
+        <td>{{ projet.Nom_projet }}</td>
 
- <td>
- {% if projet.status == "done" %}
- <span class="termine">Terminé</span>
+        <td>
+          {% if projet.status == "done" %}
+            <span class="termine">Terminé</span>
 
- {% elif projet.status == "in_progress" %}
- <span class="in-progress">En cours</span>
+          {% elif projet.status == "in_progress" %}
+            <span class="in-progress">En cours</span>
 
- {% elif projet.status == "late" %}
- <span class="late">En retard</span>
+          {% elif projet.status == "late" %}
+            <span class="late">En retard</span>
 
- {% else %}
- <span class="not-started">Non commencé</span>
- {% endif %}
- </td>
+          {% elif projet.status == "not_started" %}
+            <span class="not-started">Non commencé</span>
 
- <td>{{ projet.nom_group }}</td>
- <td>{{ projet.date_fin }}</td>
+          {% else %}
+            <span class="not-started">Non commencé</span>
+          {% endif %}
+        </td>
 
- </tr>
- {% endfor %}
- </tbody>
- </table>
+        <td>{{ projet.nom_group }}</td>
+
+        <td>{{ projet.date_fin }}</td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
-
-<!-- 🔥 SCRIPT مع تغيير اللون -->
 <script>
 const circle = document.querySelector('.circle');
 const target = parseInt(circle.dataset.progress || 0);
@@ -212,10 +216,10 @@ const target = parseInt(circle.dataset.progress || 0);
 let current = 0;
 
 function getColor(value) {
- if (value === 0) return "#e74c3c";      // 🔴
- if (value < 50) return "#f39c12";       // 🟠
- if (value < 100) return "#3498db";      // 🔵
- return "#2ecc71";                      // 🟢
+ if (value === 0) return "#e74c3c";
+ if (value < 50) return "#f39c12";
+ if (value < 100) return "#3498db";
+ return "#2ecc71";
 }
 
 const interval = setInterval(() => {

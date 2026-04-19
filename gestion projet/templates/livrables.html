@@ -5,77 +5,88 @@
 <title>Livrables</title>
 
 <style>
+:root {
+  --primary: #56CFE1;
+  --secondary: #A8E6CF;
+  --bg: #f4f6f9;
+  --card: #f8fafc;
+  --text: #1f2937;
+}
+
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:radial-gradient(circle at top left,#e6f7ff,#38bdf8 30%,#145214);
-  color:white;
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* BACK BUTTON */
 .back-btn{
   position: fixed;
   top: 15px;
   left: 15px;
   padding: 10px 15px;
-  background: linear-gradient(135deg,#38bdf8,#84cc16);
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
   color: white;
   text-decoration: none;
   border-radius: 12px;
   font-weight: bold;
   transition: 0.3s;
   z-index: 999;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
 }
 
 .back-btn:hover{
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
-/* CONTAINER */
 .container{
-  padding:80px 20px;
+  padding: 80px 20px;
 }
 
-/* CARD */
 .card{
-  background:rgba(0,0,0,0.25);
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:20px;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
-/* TABLE */
 table{
   width:100%;
   border-collapse:collapse;
   border-radius:12px;
   overflow:hidden;
+  background: var(--card);
 }
 
 th{
-  background:rgba(20,82,36,0.9);
+  background:#e9eef6;
   padding:12px;
   text-align:left;
 }
 
 td{
   padding:12px;
-  border-bottom:1px solid rgba(255,255,255,0.2);
+  border-bottom:1px solid #e5e7eb;
 }
 
-/* BUTTON */
+tr:hover{
+  background:#ecfeff;
+}
+
 .btn{
   padding:6px 10px;
   border:none;
   border-radius:8px;
   cursor:pointer;
-  background:#38bdf8;
+  background: var(--primary);
   color:white;
   transition:0.3s;
 }
 
 .btn:hover{
   transform:scale(1.05);
+  opacity:0.85;
 }
 </style>
 </head>
@@ -86,46 +97,38 @@ td{
 
 <div class="container">
 
-<!-- LAST FILE -->
 <div class="card">
   <h2>📁 Dernier fichier envoyé</h2>
-  <p><b>Nom:</b> </p>
-  <p><b>Étape:</b> </p>
-  <p><b>Date:</b> </p>
+  <p><b>Nom:</b> {{ data[0].nom_fichier if data else '' }}</p>
+<p><b>Étape:</b> {{ data[0].Nom_etape if data else '' }}</p>
+<p><b>Date:</b> {{ data[0].date_upload if data else '' }}</p>
 </div>
 
 <!-- TABLE -->
 <div class="card">
-<h2>📊 Tous les Livrables</h2>
-
+<h2>Tous les Livrables</h2>
 <table>
 <tr>
 <th>Id</th>
-<th>Nom du fichier</th>
+<th>Projet</th>
+<th>Fichier</th>
 <th>Étape</th>
-<th>Date d'envoi</th>
+<th>Date</th>
 </tr>
 
+{% for l in data %}
 <tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td><button class="btn">⬇ Télécharger</button></td>
-</tr>
+<td>{{ l.Id_fichier }}</td>
+<td>{{ l.Nom_projet }}</td>
+<td>{{ l.nom_fichier }}</td>
+<td>{{ l.Nom_etape }}</td>
+<td>{{ l.date_upload }}</td>
 
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td><button class="btn">⬇ Télécharger</button></td>
-</tr>
 
+</tr>
+{% endfor %}
 </table>
-</div>
-
-</div>
 
 </body>
+
 </html>

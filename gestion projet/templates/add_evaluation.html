@@ -27,7 +27,6 @@ label {
     color:#34495e;
 }
 
-/* inputs */
 select, input, textarea {
     width:100%;
     padding:10px;
@@ -37,14 +36,11 @@ select, input, textarea {
     transition:0.2s;
 }
 
-/* focus */
 select:focus, input:focus, textarea:focus {
     outline:none;
     border-color:#56CFE1;
     box-shadow:0 0 0 3px rgba(86,207,225,0.15);
 }
-
-/* button */
 .btn-save {
     width:100%;
     background: linear-gradient(90deg,#A8E6CF,#56CFE1);
@@ -70,31 +66,20 @@ select:focus, input:focus, textarea:focus {
 
     <form method="POST">
 
-        <label>Groupe</label>
-        <select name="Id_group" required>
-            {% for g in groupes %}
-            <option value="{{ g.Id_group }}">{{ g.nom_group }}</option>
-            {% endfor %}
-        </select>
+    <div class="info-box">
+        <p><strong>Groupe:</strong> {{ groupe.nom_group }}</p>
+        <p><strong>Étape:</strong> {{ etape.Nom_etape }}</p>
+    </div>
 
-        <!-- Étape -->
-        <label> Étape</label>
-        <select name="Id_etape" required>
-            {% for e in etapes %}
-            <option value="{{ e.Id_etape }}">{{ e.Nom_etape }}</option>
-            {% endfor %}
-        </select>
+    <label>Note</label>
+    <input type="number" name="Note" min="0" max="20" placeholder="Ex: 15" required>
 
-        <label> Note</label>
-        <input type="number" name="Note" min="0" max="20" placeholder="Ex: 15" required>
+    <label>Remarque</label>
+    <textarea name="Remarque" rows="3" placeholder="Ajouter une remarque..."></textarea>
 
-        <label> Remarque</label>
-        <textarea name="Remarque" rows="3" placeholder="Ajouter une remarque..."></textarea>
+    <button type="submit" class="btn-save">Enregistrer</button>
 
-        <button type="submit" class="btn-save"> Enregistrer</button>
-
-    </form>
-
+</form>
 </div>
 
 {% endblock %}
